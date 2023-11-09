@@ -98,13 +98,17 @@ class PatientController extends Controller
     public function edit(Patient $patient)
     {
         $user = Auth::user();
+        $categories = Category::all();
 
         // Verifica se l'utente loggato è autorizzato a modificare il paziente O se è un admin
         if ($patient->user_id !== $user->id && $user->email !== 'admin@gmail.com') {
             abort(403, 'Unauthorized'); // Ritorna un errore di accesso negato
         }
 
-        return view("patients.edit", compact('user', 'patient'));
+        // Ottieni le categorie associate al paziente
+        $selectedCategories = $patient->categories->pluck('id')->toArray();
+
+        return view("patients.edit", compact('user', 'patient', 'categories', 'selectedCategories'));
     }
 
     /**
@@ -123,6 +127,9 @@ class PatientController extends Controller
         $data["consent"] = ($data["consent"] == "on" ? true : false);
 
         $patient->update($data);
+
+        // Aggiorna le categorie associate al paziente
+        $patient->categories()->sync($data['categories'] ?? []);
 
         // Imposta il messaggio di successo nella sessione
         Session::flash('success_message', 'Aggiornamento avvenuto con successo!');

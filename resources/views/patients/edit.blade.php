@@ -163,6 +163,26 @@
                 </div>
             </div>
 
+            <div class="mb-4 col-md-12">
+                <label class="form-label">Categoria diagnostica &#x2768;MDC&#x2769;*:</label>
+                <div class="d-flex flex-wrap">
+                    @foreach($categories as $category)
+                    <div class="form-check me-4 mb-2">
+                        <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->id }}"
+                            id="category_{{ $category->id }}" {{ in_array($category->id, $selectedCategories) ? 'checked' : '' }}>
+                        <label class="form-check-label" for="category_{{ $category->id }}">
+                            {{ $category->category }}
+                        </label>
+                    </div>
+                    @endforeach
+                </div>
+                @error('categories')
+                <div class="invalid-feedback d-block">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
             <div class="d-flex justify-content-center my-5 py-5">
                 <div class="mb-4 col-md-11">
                     <label class="form-label fw-bold fs-4"><i>Autorizzazione al trattamento sanitario:</i></label>
@@ -300,6 +320,15 @@ $(document).ready(function() {
         if (email && !/.*@.*/.test(email)) {
             errors.push("L'email non è valida, deve contenere la @.");
             $('#email').addClass('is-invalid');
+        }
+
+        // Validazione delle categorie
+        var selectedCategories = $('input[name="categories[]"]:checked');
+        if (selectedCategories.length === 0) {
+            errors.push("Devi selezionare almeno una categoria.");
+            $('input[name="categories[]"]').addClass('is-invalid');
+        } else {
+            $('input[name="categories[]"]').removeClass('is-invalid');
         }
 
         // Validazione del campo Autorizzazione al trattamento sanitario
