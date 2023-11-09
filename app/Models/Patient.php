@@ -20,4 +20,9 @@ class Patient extends Model
     {
         return $this->belongsTo(Signature::class);
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'categories_patients');
+    }
 }
