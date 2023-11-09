@@ -160,6 +160,20 @@
                 </div>
             </div>
 
+            <div class="mb-4 col-md-4">
+                <label class="form-label">Categoria diagnostica &#x2768;MDC&#x2769;*: </label>
+                <select name="categories[]" multiple class="form-select @error('categories') is-invalid @enderror">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->category }}</option>
+                    @endforeach
+                </select>
+                @error('categories')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+                @enderror
+            </div>
+
             <div class="d-flex justify-content-center my-5 py-5">
                 <div class="mb-4 col-md-11">
                     <label class="form-label fw-bold fs-4"><i>Autorizzazione al trattamento sanitario:</i></label>

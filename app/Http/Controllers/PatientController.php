@@ -42,6 +42,11 @@ class PatientController extends Controller
 
         $patient->save();
 
+        // Associa le categorie al paziente
+        if (isset($data['categories'])) {
+            $patient->categories()->attach($data['categories']);
+        }
+
         return view('patients.signature', compact('patient'));
     }
 

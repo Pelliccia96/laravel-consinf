@@ -33,6 +33,7 @@ class StorePatientRequest extends FormRequest
             'cap' => 'required|numeric',
             'phone' => 'required|numeric',
             'email' => 'nullable|email|regex:/.*@.*/',
+            'categories' => 'required|array',
             'consent' => 'required|accepted',
         ];
     }
@@ -81,6 +82,9 @@ class StorePatientRequest extends FormRequest
             "email" => [
                 'email' => "Inserisci un indirizzo email valido",
                 'regex' => "L indirizzo email deve contenere il simbolo @"
+            ],
+            "categories" => [
+                'required' => "Devi selezionare almeno una categoria",
             ],
             "consent" => [
                 'required' => "Devi accettare i termini e le condizioni",
