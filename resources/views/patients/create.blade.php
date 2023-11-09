@@ -30,13 +30,15 @@
         <p class="fw-semibold"><i>{{ $user->name }} - {{ $user->department->department }}</i></p>
     </div>
     <div>
-        <form id="consent-form" action="{{ route('patients.store') }}" method="POST" class="p-5" enctype="multipart/form-data">
+        <form id="consent-form" action="{{ route('patients.store') }}" method="POST" class="p-5"
+            enctype="multipart/form-data">
             @csrf
 
             <div class="d-flex justify-content-center gap-5">
                 <div class="mb-4 col-md-4">
                     <label class="form-label">Cognome*: </label>
-                    <input type="text" id="surname" name="surname" class="form-control @error('surname') is-invalid @enderror"
+                    <input type="text" id="surname" name="surname"
+                        class="form-control @error('surname') is-invalid @enderror"
                         value="{{ $errors->has('surname') ? '' : old('surname') }}">
                     @error('surname')
                     <div class="invalid-feedback">
@@ -104,7 +106,8 @@
 
                 <div class="mb-4 col-md-2">
                     <label class="form-label">Scadenza: </label>
-                    <input type="date" id="expiry" name="expiry" class="form-control @error('expiry') is-invalid @enderror"
+                    <input type="date" id="expiry" name="expiry"
+                        class="form-control @error('expiry') is-invalid @enderror"
                         value="{{ $errors->has('expiry') ? '' : old('expiry') }}">
                     @error('expiry')
                     <div class="invalid-feedback">
@@ -117,7 +120,8 @@
             <div class="d-flex justify-content-center gap-5">
                 <div class="mb-4 col-md-4">
                     <label class="form-label">Residenza*: </label>
-                    <input type="text" id="address" name="address" class="form-control @error('address') is-invalid @enderror"
+                    <input type="text" id="address" name="address"
+                        class="form-control @error('address') is-invalid @enderror"
                         value="{{ $errors->has('address') ? '' : old('address') }}">
                     @error('address')
                     <div class="invalid-feedback">
@@ -160,15 +164,21 @@
                 </div>
             </div>
 
-            <div class="mb-4 col-md-4">
-                <label class="form-label">Categoria diagnostica &#x2768;MDC&#x2769;*: </label>
-                <select name="categories[]" multiple class="form-select @error('categories') is-invalid @enderror">
+            <div class="mb-4 col-md-12">
+                <label class="form-label">Categoria diagnostica &#x2768;MDC&#x2769;*:</label>
+                <div class="d-flex flex-wrap">
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->category }}</option>
+                    <div class="form-check me-4 mb-2">
+                        <input class="form-check-input" type="checkbox" name="categories[]" value="{{ $category->id }}"
+                            id="category_{{ $category->id }}">
+                        <label class="form-check-label" for="category_{{ $category->id }}">
+                            {{ $category->category }}
+                        </label>
+                    </div>
                     @endforeach
-                </select>
+                </div>
                 @error('categories')
-                <div class="invalid-feedback">
+                <div class="invalid-feedback d-block">
                     {{ $message }}
                 </div>
                 @enderror
@@ -180,7 +190,8 @@
                     <div class="form-check d-flex align-items-center gap-3">
                         <input class="form-check-input fs-3" type="checkbox" id="consent" name="consent" id="consent">
                         <label class="form-check-label fw-semibold fs-5" for="consent">
-                            Ho preso visione del Consenso Informato, dichiaro di averlo compreso e accettato nel pieno delle mie facoltà.*
+                            Ho preso visione del Consenso Informato, dichiaro di averlo compreso e accettato nel pieno
+                            delle mie facoltà.*
                         </label>
                     </div>
                     @error('consent')
@@ -199,7 +210,7 @@
     </div>
 </div>
 <script>
-// Validazione Client Side
+    // Validazione Client Side
 $(document).ready(function() {
     // Gestisci l'invio del modulo
     $('#consent-form').submit(function(event) {
@@ -312,6 +323,15 @@ $(document).ready(function() {
         if (email && !/.*@.*/.test(email)) {
             errors.push("L'email non è valida, deve contenere la @.");
             $('#email').addClass('is-invalid');
+        }
+
+        // Validazione delle categorie
+        var selectedCategories = $('input[name="categories[]"]:checked');
+        if (selectedCategories.length === 0) {
+            errors.push("Devi selezionare almeno una categoria.");
+            $('input[name="categories[]"]').addClass('is-invalid');
+        } else {
+            $('input[name="categories[]"]').removeClass('is-invalid');
         }
 
         // Validazione del campo Autorizzazione al trattamento sanitario

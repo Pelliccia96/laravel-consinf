@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePatientRequest;
 use App\Http\Requests\StoreSignatureRequest;
 use App\Http\Requests\UpdatePatientRequest;
+use App\Models\Category;
 use App\Models\Patient;
 use App\Models\Signature;
 use App\Models\User;
@@ -20,8 +21,9 @@ class PatientController extends Controller
     public function create()
     {
         $user = Auth::user();
+        $categories = Category::all();
 
-        return view('patients.create', compact('user'));
+        return view('patients.create', compact('user', 'categories'));
     }
 
     /**
@@ -76,6 +78,7 @@ class PatientController extends Controller
     public function show(Patient $patient)
     {
         $users = User::all();
+        $categories = Category::all();
 
         $user_id = auth()->user()->id;
         $patients = Patient::where('user_id', $user_id)
@@ -86,7 +89,7 @@ class PatientController extends Controller
             $patients = Patient::all();
         }
 
-        return view("patients.show", compact('patients', 'users'));
+        return view("patients.show", compact('patients', 'users', 'categories'));
     }
 
     /**

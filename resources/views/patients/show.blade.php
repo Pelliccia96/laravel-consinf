@@ -19,6 +19,11 @@
                     <p class="card-text"><strong>Nome:</strong> {{ $patient->name }}</p>
                     <p class="card-text"><strong>Data di Nascita:</strong> {{ \Carbon\Carbon::parse($patient->date)->format('d/m/Y') }}</p>
                     <p class="card-text"><strong>Codice Fiscale:</strong> {{ $patient->cf }}</p>
+                    <p class="card-text"><strong>MDC:</strong>
+                        @foreach ($patient->categories as $category)
+                            {{ $category->category }}.
+                        @endforeach
+                    </p>
                     @if($patient->ts)
                         <p class="card-text"><strong>Tessera Sanitaria:</strong> {{ $patient->ts }}</p>
                         <p class="card-text"><strong>Scadenza Tessera:</strong> {{ \Carbon\Carbon::parse($patient->expiry)->format('d/m/Y') }}</p>
