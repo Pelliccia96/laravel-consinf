@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\PatientController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/patients', [PatientController::class, 'index']);
+Route::get('/users', [UserController::class, 'index']);
